@@ -15,6 +15,9 @@ def perform_request(domain, port, url, request_type):
         # Send the request command to the server
         mysock.send(cmd)
 
+        # Initialize an empty string to store the response
+        response = ""
+
         # Receive data from the server in chunks of 512 bytes
         while True:
             data = mysock.recv(512)
@@ -23,11 +26,18 @@ def perform_request(domain, port, url, request_type):
             if len(data) < 1:
                 break
 
-            # Print the received data (decoded from bytes to string) without adding a newline
-            print(data.decode(), end='')
+            # Append the received data (decoded from bytes to string) to the response string
+            response += data.decode()
+
+        # Print the response
+        print(response)
+
+        # Return the response
+        return response
 
     except Exception as e:
         print(f"An error occurred: {e}")
+        return None
     finally:
         # Close the socket connection
         mysock.close()
